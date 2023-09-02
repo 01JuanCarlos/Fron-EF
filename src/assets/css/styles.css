@@ -1,0 +1,236 @@
+*{
+    margin:0px;
+    padding: 0px;
+}
+
+header{
+    /* background: #407ec1; */
+   
+    width: 100%;
+    height: auto;
+    position: fixed;
+    text-align: center;
+    display: inline;
+    text-transform: uppercase;
+}
+header ul li{
+    display: inline-block;
+    margin: 0px auto;
+    text-align: center;
+    line-height: 90px;
+
+}
+header a{
+    color: white;
+    display: block;
+    padding-right: 20px;
+    padding-left: 20px;
+    height: inherit;
+    text-decoration: none;
+    transform: all 300ms;
+}
+header a:hover,
+.actived{
+background: rgba(135, 175, 221, 0.315);
+}
+/* logo */
+#logo{
+    font-family:'Cascadia Mono';
+    font-size: 30px;
+}
+#logo a{
+    transition: color 500ms,transform 500ms;
+}
+
+#logo a:hover{
+    background: transparent;
+    color: rgb(228, 28, 61);
+    transform: scale(1.50,1.50);
+}
+#content{
+    min-height: 700px;
+    width: 75%;
+    margin: 0px auto;
+    box-shadow: 0px 0px 40px black;
+    /* border-left: 1px solid #b7b7b7; */
+    /* background: rgba(255, 255, 255, 0.7); */
+    padding-top: 120px;
+}
+/*  */
+footer{
+    width: 75%;
+    margin: 0px auto;
+    padding-top: 15px;
+    color: rgba(0, 0, 0, 0.466);
+}
+
+/*  */
+#title{
+  width: 70%;
+  margin: 0px auto;
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 100px;  
+}
+#title h1{
+    font-size: 60px;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 5px;
+}
+#title h2{
+    font-size: 25px;
+    color:gray;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+article.about{
+    width: 70%;
+    margin: 0px auto;
+    margin-bottom: 20px;
+    font-size: 15px;
+}
+.about h2{
+    border-bottom: 1px slid #ccc;
+    padding-bottom: 5px;
+    margin-bottom: 5px;
+}
+.about p{
+    padding-top: 20px;
+    padding-bottom: 30px;
+    text-align: justify;
+}
+/*Formulario*/
+.container{
+    display: block;
+    /* border-bottom: 1px solid #ccc; */
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+form{
+    width: 50%;
+}
+form label{
+    display: block;
+    width: 100%;
+    
+}
+form input[type="text"],
+form input[type="number"],
+form input[type="email"],
+form textarea{
+    width: 54%;
+    padding: 5px;
+}
+
+form button,
+form input[type="submit"]{
+   
+    display: block;
+    font-size: 17px;
+    padding: 5px;
+    margin-top: 15px;
+}
+
+form input[disabled]:hover{
+    cursor:not-allowed ;
+}
+.form-error{
+    padding: 5px;
+    background: red;
+}
+#Pokemon{
+    width: 45px;
+}
+/*Bootstrap*/
+.marquee-container {
+    background: rgba(0, 0, 0, 0.859);
+    overflow: hidden;
+    width: 200px;
+    height: 40px;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .marquee-text {
+    margin-top: 5px;
+    text-align: center;
+    font-family:'Press Start 2P';
+    color: rgba(128, 255, 0, 0.473);
+    display: inline-block;
+    white-space: nowrap;
+    animation: marquee 8s linear infinite;
+  }
+
+  @keyframes marquee {
+    0% {
+      transform: translateX(120%);
+    }
+    100% {
+      transform: translateX(-120%);
+    }
+  }
+  #modal{
+    display: block;
+    background:rgb(0 0 0 / 45%);
+    color: #954f4f;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    transition: all .5s;
+}
+#body-modal{
+   text-align: center;
+   height: 364px;
+   width: 511px;
+   position: fixed;
+   top: 50%;
+   left: 50%;
+   transform: translate(-50%, -50%);
+   /* background-color: white; */
+   color: black;
+   padding: 20px;
+}
+#body-modal img{
+    height: 245px;
+}
+#body-modal button{float: right;}
+/* angular material */
+section {
+    display: table;
+  }
+  
+  .example-label {
+    display: table-cell;
+    font-size: 14px;
+    margin-left: 8px;
+    min-width: 120px;
+  }
+  
+  .example-button-row {
+    display: table-cell;
+    max-width: 600px;
+  }
+  
+  .example-button-row .mat-mdc-button-base {
+    margin: 8px 8px 8px 0;
+  }
+  
+  .example-flex-container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+  
+  .example-button-container {
+    display: flex;
+    justify-content: center;
+    width: 120px;
+  }
+  
+
+ 
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
