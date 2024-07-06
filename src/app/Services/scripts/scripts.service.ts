@@ -6,7 +6,7 @@ import { Injectable } from '@angular/core';
 export class ScriptsService {
 
   constructor() { }
-  cargar(archivos:String[]){
+/*  cargar(archivos:String[]){
     for(let archivo of archivos){
       let script=document.createElement('script');
       script.src='./assets/js/'+archivo+'.js';
@@ -18,5 +18,5 @@ export class ScriptsService {
     setTimeout(function timeout() {
       $('#img-chek').hide();
     }, 2000)
-  }
+  }*/
 }

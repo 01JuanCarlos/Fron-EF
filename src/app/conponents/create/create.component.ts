@@ -1,10 +1,8 @@
-import { AfterViewInit, Component, DoCheck, ElementRef, OnDestroy, OnInit, Renderer2,ViewChild  } from '@angular/core';
-import { Project } from 'src/app/Models/project';
-import { ProjectService } from 'src/app/Services/project.service';
-import { ScriptsService } from 'src/app/Services/scripts/scripts.service';
-import $ from 'jquery';
-import { FormBuilder, FormGroup, FormControl, Validators, NgForm, FormArray } from '@angular/forms';
-import { from } from 'rxjs';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { forkJoin } from 'rxjs';
+import { Computer } from 'src/app/Models/computer';
+import { ComputadoraService } from 'src/app/Services/computadora.service';
 
 // import{form_vali};
 @Component({
@@ -12,117 +10,103 @@ import { from } from 'rxjs';
   templateUrl: './create.component.html',
   styleUrls: ['./create.component.css']
 })
-export class CreateComponent  implements AfterViewInit,OnInit,DoCheck,OnDestroy{
-@ViewChild('myCheckbox') myCheckbox!:ElementRef;
-  //cracion de Arreglos
-    nombres:string[] = ['bulbasaur', 'charmander', 'squirtle'];
-    img:string[] = ['../../../assets/img/bulbasaur.png','../../../assets/img/charmander.png','../../../assets/img/squirtle.png'];
-    gif:string[]=['https://i.gifer.com/WnES.gif','https://media.tenor.com/whqWFg-nxdsAAAAM/pokemon-charmander.gif','https://i.gifer.com/origin/d8/d83e9951f28fc811c1166b16dcaec930_w200.gif']
-  //union de Arrays
-    pokedex = this.nombres.map((poke, index)=> 
-    ({ poke,
-      img: this.img[index],
-      gif:this.gif[index],
-      checked:false
-    }
-    ));
-  //instanciamos clases 
-    public project:Project;
-  //variables publicas
-    public binging='';
-    public title:string;
-    myForm: FormGroup;
-    public status=false;
-  //contructor
-  constructor(private readonly formBuilder: FormBuilder,
-            private renderer2:Renderer2,
-            private _scripts:ScriptsService,
-            private _projectService:ProjectService){
-    this.myForm=this.form();
-    this.cargarScripts();
-    this.title='Crear proyecto'
-    this.project=new Project('','','','');
+export class CreateComponent  implements OnInit{
+
+  public computers:Computer[] = [];
+
+//instanciamos clase computadora
+  public computer:Computer;
+
+  myForm: FormGroup;
+
+  constructor(private fb: FormBuilder,
+    private _compuService:ComputadoraService ) {
+      this.myForm=this.form();
+    //inicializamos
+    this.computer=new Computer('','',0.00,0,'','');
   }
-  
-  cargarScripts(){
-    //metodo para agregar scripts js
-    this._scripts.cargar(['form_validation']);
-  }
-  
+ 
+
+
   form():FormGroup{
-    return this.formBuilder.group({
-      usuario: ['', [Validators.required]],
-      password: ['', [Validators.required]],
-      condiciones: ['', [Validators.required]],
-      chekpokemon:new FormControl(null,[Validators.required]),
-      foto:['', [Validators.required]],
-      // Agrega otros campos aquí con sus validaciones
+    return this.fb.group({
+      nombre: ['', [Validators.required]],
+      descripcion: ['', [Validators.required]],
+      categoria: ['', [Validators.required]],
+      precio:new FormControl(null,[Validators.required]),
+      stock:['', [Validators.required]],
+      fabricante:['', [Validators.required]]
+
     });
   }
 
+
+
+
+
   ngOnInit(){
-    //validamos los checkbox
-  let getCheckedRadio=null
-  this.pokedex.forEach(o=>{
-    if(o.checked){
-      getCheckedRadio=o.poke;
-    }
-  })
-  this.myForm.addControl('chekpokemon', new FormControl(getCheckedRadio, [Validators.required])
-  );
-
+   this.getProjects();
   } 
 
-  ngAfterViewInit(): void {
-      let Arraypokedex= this.pokedex
-      let imagen=$('img');
-      $('input[type="radio"]').on('click', function() {
-        // Obtener el índice del (input-radio) seleccionado
-        let indice = $(this).parent().index();
-        //recorremos nuestro Arraypokedex para validar el indice
-        for (let i = 0; i < imagen.length && i <  Arraypokedex.length; i++) {
-          if (indice==i){
-              imagen[i].setAttribute('src',Arraypokedex[i].gif);       
-          }else 
-          {
-            imagen[i].setAttribute('src',Arraypokedex[i].img); 
-          }
+  getProjects(): void {
+    this._compuService.getProduc().subscribe(
+      response => {
+        if (response && response.length > 0) {
+          this.computers = response;
         }
-      });
-  } 
-
-  ngOnDestroy(): void {
+      },
+      error => {
+        console.log(error);
+      }
+    );
   }
 
-  ngDoCheck(): void {
-  } 
-
-
   onSubmit(form: any){
-    if (this.myForm.valid==true) {
-      this.status=true;
-      $('#modal').css('display','block')
-      this._scripts.img_verificacion();
+   if (this.myForm.valid) {
       const formData = this.myForm.value;
-      this.project=new Project(formData.usuario,formData.password,formData.chekpokemon,formData.foto);
-      this._projectService.saveProject(this.project).subscribe(
+      this.computer=new Computer(formData.nombre,formData.descripcion,formData.precio,formData.stock,formData.categoria,formData.fabricante);
+      this._compuService.saveProducto(this.computer).subscribe(
         {
           next: respuesta => {
             console.log(respuesta);
+            form.reset();
           },
           error: error => {
             console.log('Error: ', error);
           }
         }
         )
-      
-    }
     
+
+    }
+
+
+     /*   this.computer=new Computer(
+          "JS",
+          "Laptop de 15.6 pulgadas con procesador Intel Core i5, 8GB RAM y 256GB SSD.",
+          2500,
+          10,
+        "Electrónicos",
+        "Acer"
+        );
+          console.log(this.computer);
+        this._compuService.saveProducto(this.computer).subscribe(
+          {
+            next: respuesta => {
+              console.log(this.computer);
+              console.log(respuesta);
+              form.reset();
+            },
+            error: error => {
+              console.log('Error: ', error);
+            }
+          }
+          )*/
+ 
   }
 
-  close_modal(){
-    $('#modal').css('display','none')
-  }
+
+
  
 
 }

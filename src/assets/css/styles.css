@@ -2,6 +2,11 @@
     margin:0px;
     padding: 0px;
 }
+html,body,main{
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
 
 header{
     /* background: #407ec1; */
@@ -61,7 +66,6 @@ footer{
     width: 75%;
     margin: 0px auto;
     padding-top: 15px;
-    color: rgba(0, 0, 0, 0.466);
 }
 
 /*  */
@@ -189,7 +193,7 @@ form input[disabled]:hover{
    top: 50%;
    left: 50%;
    transform: translate(-50%, -50%);
-   /* background-color: white; */
+   background-color: white;
    color: black;
    padding: 20px;
 }
@@ -231,6 +235,7 @@ section {
   }
   
 
- 
+ /*
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+*/
