@@ -28,4 +28,22 @@ export class ComputadoraService{
 		return this._http.get(this.url+'all', {headers: headers});
 	}
 
+    getProductId(id:number): Observable<any>{
+		let headers = new HttpHeaders().set('Content-Type', 'application/json');
+
+		return this._http.get(this.url+id,{headers: headers});
+	}
+    deleteProduct(id:number): Observable<any>{
+		let headers = new HttpHeaders().set('Content-Type', 'application/json');
+
+		return this._http.delete(this.url+'delete/'+id, {headers: headers});
+	}
+
+    updateProject(computer:Computer): Observable<any>{
+		let params = JSON.stringify(computer);
+		let headers = new HttpHeaders().set('Content-Type', 'application/json');
+
+		return this._http.put(this.url+'update/'+computer.id, params, {headers: headers});
+	}
+
 }
