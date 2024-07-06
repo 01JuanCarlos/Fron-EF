@@ -16,7 +16,7 @@ export class CreateComponent  implements OnInit{
   //instanciamos clase computadora
   public computer:Computer;
   //variables 
-  id: number=0;
+  id?: number;
   myForm: FormGroup;
   //inicializamos servicios en el constructor 
   constructor(
@@ -30,36 +30,66 @@ export class CreateComponent  implements OnInit{
  
   //metodo que se ejecuta por defecto al iniciar la pagina
   ngOnInit(){
-    //this.getProducts();
+    this.getProducts();
 
    }
 
    
   //Metodo que se ejucta al hacer submit en el formulario y guarda los datos a traves de nuestro servicio 
-  onSubmit(form: any){
+  onSubmit(form: any) {
     if (this.myForm.valid) {
-       const formData = this.myForm.value;
-       this.computer=new Computer(formData.nombre,formData.descripcion,formData.precio,formData.stock,formData.categoria,formData.fabricante);
-       this._compuService.saveProducto(this.computer).subscribe(
-         {
-           next: respuesta => {
-             console.log(respuesta);
-             form.reset();
-           },
-           error: error => {
-             console.log('Error: ', error);
-           }
-         }
-         )
-     
- 
-     }
-   }
-
+      const formData = this.myForm.value;
+  
+      // Verificar si existe formData.id para determinar si es una actualización o una creación
+      if (formData.id) {
+        // Es una actualización
+        this._compuService.updateProject(formData).subscribe({
+          next: respuesta => {
+            console.log('Producto actualizado:', respuesta);
+            form.reset(); // Opcional: limpiar el formulario después de actualizar
+            this.getProducts(); // Recargar la lista de productos después de la actualización
+          },
+          error: error => {
+            console.error('Error al actualizar producto:', error);
+            // Manejar errores aquí
+          }
+        });
+      } else {
+        // Es una creación (aquí también podrías mantener tu lógica actual de creación)
+        this.computer = new Computer(formData.nombre, formData.descripcion, formData.precio, formData.stock, formData.categoria, formData.fabricante);
+        this._compuService.saveProducto(this.computer).subscribe({
+          next: respuesta => {
+            console.log('Producto guardado:', respuesta);
+            form.reset(); // Opcional: limpiar el formulario después de guardar
+            this.getProducts(); // Recargar la lista de productos después de guardar
+          },
+          error: error => {
+            console.error('Error al guardar producto:', error);
+            // Manejar errores aquí
+          }
+        });
+      }
+    }
+  }
+  
+   updateForm(comp: any) {
+    // Cargar los datos del computer seleccionado en el formulario para actualizar
+    this.myForm.patchValue({
+      id: comp.id,
+      nombre: comp.nombre,
+      descripcion: comp.descripcion,
+      categoria: comp.categoria,
+      precio: comp.precio,
+      stock: comp.stock,
+      fabricante: comp.fabricante
+    });
+    console.log(this.myForm);
+  }
 
   //recolectamos los datos del formulario utilizando FormGroup
   form():FormGroup{
     return this.fb.group({
+      id: [''],
       nombre: ['', [Validators.required]],
       descripcion: ['', [Validators.required]],
       categoria: ['', [Validators.required]],
@@ -72,7 +102,7 @@ export class CreateComponent  implements OnInit{
 
 
   //obtenemos productos desde nuestro servicio
- /* getProducts(): void {
+  /*getProducts(): void {
     this._compuService.getProduc().subscribe(
       response => {
         if (response && response.length > 0) {
@@ -84,8 +114,8 @@ export class CreateComponent  implements OnInit{
       }
     );
   }
-*/
 
+*/
   //obtenemos productos por id desde nuestro servicio
  /* getProductId(): void {
     if (this.id) {
@@ -119,6 +149,59 @@ export class CreateComponent  implements OnInit{
   }
 
  */
+
+
+
+  getProducts(): void {
+    if (!this.id || this.id === null) {
+      // Si this.id no está definido o es 0, listar todos los productos
+      this._compuService.getProduc().subscribe(
+        response => {
+          this.computers = response || []; // Asignar la respuesta al array computers
+        },
+        error => {
+          console.error('Error fetching products:', error);
+        }
+      );
+    } else {
+      // Si this.id tiene un valor, obtener el producto por ese ID
+      this.getProductId();
+    }
+  }
+
+
+  
+    // Obtener un producto por su ID
+    getProductId(): void {
+      if (this.id) {
+        this._compuService.getProductId(this.id).subscribe(
+          response => {
+            this.computers = response ? [response] : []; // Asigna el producto encontrado a computers (en un array para mantener consistencia)
+          },
+          error => {
+            console.error('Error fetching product by ID:', error);
+          }
+        );
+      }
+    }
+
+    //Eliminamos productos por id
+    deleteProjectId(id: number): void {
+      if (confirm('¿Estás seguro de que deseas eliminar este producto?')) {
+        this._compuService.deleteProduct(id).subscribe(
+          response => {
+            console.log('Product deleted successfully:', response);
+            // Aquí podrías realizar acciones adicionales después de borrar el producto
+            // Por ejemplo, actualizar la lista de productos
+          this.getProducts(); // Actualiza la lista después de eliminar
+          },
+          error => {
+            console.error('Error deleting product:', error);
+          }
+        );
+      }
+    }
+
 
 }
 

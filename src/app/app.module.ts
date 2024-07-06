@@ -20,7 +20,7 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { CreateComponent } from './conponents/create/create.component';
 import { MenuComponent } from './conponents/menu/menu.component';
-import { ListComponent } from './conponents/list/list.component';
+import { UserComponent } from './conponents/user/user.component';
 
 
 @NgModule({
@@ -28,9 +28,7 @@ import { ListComponent } from './conponents/list/list.component';
     AppComponent,
     CreateComponent,
     MenuComponent,
-    ListComponent
-
-   
+    UserComponent,
   ],
   imports: [
     BrowserModule,
